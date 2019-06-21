@@ -6,15 +6,10 @@ services:
           - JAVA_OPTS:-Xmx512m
         ports:
           - 80:8080
-        volumes:
-          - type: volume
-            source: frickl
-            target: /usr/local/tomcat/webapps
-          - type: bind
-            source: ./images
-            target: /data/images
         restart: unless-stopped
         container_name: frickl
+        depends_on:
+           - "mysql"
 
     mysql:
         image: mysql:5.7
@@ -31,6 +26,5 @@ services:
         container_name: frickl-mysql
 
 volumes:
-    frickl:
     mysql:
           
