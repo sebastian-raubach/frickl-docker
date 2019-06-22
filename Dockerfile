@@ -3,8 +3,8 @@ FROM tomcat:8-jdk8
 LABEL maintainer="sebastian@raubach.co.uk"
 
 # Clone the Frickl server code and client code
-RUN git clone https://github.com/sebastian-raubach/frickl-web-server.git /opt/frickl-server
-RUN git clone https://github.com/sebastian-raubach/frickl-web /opt/frickl
+RUN git clone https://github.com/sebastian-raubach/frickl-web-server.git /opt/frickl-server && \
+    git clone https://github.com/sebastian-raubach/frickl-web /opt/frickl
 
 # Install node.js
 RUN apt-get update && \
