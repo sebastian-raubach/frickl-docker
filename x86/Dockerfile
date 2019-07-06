@@ -12,8 +12,17 @@ RUN apt-get update && \
     apt-get update && \
     apt-get install -y nodejs
 
+# Build the client code
+WORKDIR /opt/frickl
+RUN rm .env && \
+    echo "VUE_APP_BASE_URL=/frickl/api/" > .env
+RUN npm i && \
+    npm run build && \
+    mkdir /opt/frickl-server/web/dist/ && \
+    cp -a /opt/frickl/dist/. /opt/frickl-server/web/dist/
+
 # Copy a configuration for the server
-COPY build.properties /opt/frickl-server
+COPY build.properties /opt/frickl-server/build.properties
 
 # Download Ant and build the server code
 RUN wget https://www-eu.apache.org/dist//ant/binaries/apache-ant-1.10.6-bin.tar.gz -P /tmp/
@@ -21,15 +30,6 @@ RUN tar xvzf /tmp/apache-ant-1.10.6-bin.tar.gz -C /opt/
 RUN /opt/apache-ant-1.10.6/bin/ant -f /opt/frickl-server/build.xml war
 RUN mkdir -p /usr/local/tomcat/webapps
 RUN cp /opt/frickl-server/frickl.war /usr/local/tomcat/webapps/
-
-# Build the client code
-WORKDIR /opt/frickl
-RUN rm .env && \
-    echo "VUE_APP_BASE_URL=/frickl/" > .env
-RUN npm i && \
-    npm run build && \
-    mkdir /usr/local/tomcat/webapps/frickl-web && \
-    cp -a /opt/frickl/dist/. /usr/local/tomcat/webapps/frickl-web
 
 COPY tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 
