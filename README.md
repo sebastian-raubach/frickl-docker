@@ -7,12 +7,41 @@ Modify `docker-compose.yml` and bind your image folder into the container:
 version: '3.3'
 services:
     frickl:
-        image: frickl
-        [...]
+        image: sebastianraubach/frickl:x86 (or :arm)
+        environment:
+          - JAVA_OPTS:-Xmx512m
+        ports:
+          - 80:8080
+        restart: always
         volumes:
           - type: bind
             source: /path/to/your/images
             target: /data/images
+          - type: volume
+            source: frickl
+            target: /usr/local/tomcat/temp
+        container_name: frickl
+        depends_on:
+           - "mysql"
+
+    mysql:
+        image: mysql:5.7 (or yobasystems/alpine-mariadb:arm32v7)
+        volumes:
+          - type: volume
+            source: mysql
+            target: /var/lib/mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: FricklIsAwesome
+          MYSQL_DATABASE: frickl
+          MYSQL_USER: frickl
+          MYSQL_PASSWORD: frickl
+        restart: always
+        container_name: mysql
+
+volumes:
+    frickl:
+    mysql:
+
 ```
 
 ```
@@ -21,25 +50,29 @@ docker-compose up -d
 
 ## Using plain Docker
 ```
+docker volume create frickl
+docker volume create mysql
+
 docker network create frickl
 
 docker run -d \
     --name mysql \
-    --net frickl \
-    --env MYSQL_ROOT_PASSWORD=FricklIsAwesome \
-    --env MYSQL_DATABASE=frickl \
-    --env MYSQL_USER=frickl \
-    --env MYSQL_PASSWORD=frickl \
-    --mount source=frickl-mysql,target=/var/lib/mysql \
-    --restart unless-stopped
-    yobasystems/alpine-mariadb:arm32v7
+    --network frickl \
+    -e MYSQL_ROOT_PASSWORD=FricklIsAwesome \
+    -e MYSQL_DATABASE=frickl \
+    -e MYSQL_USER=frickl \
+    -e MYSQL_PASSWORD=frickl \
+    -v mysql:/var/lib/mysql
+    --restart always
+    mysql:5.7 (or yobasystems/alpine-mariadb:arm32v7)
 
 docker run -d \
     --name frickl \
-    --net frickl \
-    --env JAVA_OPTS=-Xmx512m \
-    --mount type=bind,source=/path/to/your/images,target=/data/images
+    --network frickl \
+    --e JAVA_OPTS=-Xmx512m \
+    -v frickl:/usr/local/tomcat/temp
+    -v /path/to/your/images:/data/images
     -p 80:8080 \
-    --restart unless-stopped
-    sebastianraubach/frickl:arm
+    --restart always
+    sebastianraubach/frickl:x86 (or :arm)
 ```
