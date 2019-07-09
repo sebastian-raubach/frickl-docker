@@ -62,17 +62,17 @@ docker run -d \
     -e MYSQL_DATABASE=frickl \
     -e MYSQL_USER=frickl \
     -e MYSQL_PASSWORD=frickl \
-    -v mysql:/var/lib/mysql
-    --restart always
+    -v mysql:/var/lib/mysql \
+    --restart always \
     mysql:5.7 (or yobasystems/alpine-mariadb:arm32v7)
 
 docker run -d \
     --name frickl \
     --network frickl \
     --e JAVA_OPTS=-Xmx512m \
-    -v frickl:/usr/local/tomcat/temp
-    -v /path/to/your/images:/data/images
+    -v frickl:/usr/local/tomcat/temp \
+    -v /path/to/your/images:/data/images \
     -p 80:8080 \
-    --restart always
+    --restart always \
     sebastianraubach/frickl:x86 (or :arm)
 ```
