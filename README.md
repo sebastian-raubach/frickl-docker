@@ -6,6 +6,20 @@ Modify `docker-compose.yml` and bind your image folder into the container:
 ```
 version: '3.3'
 services:
+    mysql:
+        image: mysql:5.7 (or yobasystems/alpine-mariadb:arm32v7)
+        volumes:
+          - type: volume
+            source: mysql
+            target: /var/lib/mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: FricklIsAwesome
+          MYSQL_DATABASE: frickl
+          MYSQL_USER: frickl
+          MYSQL_PASSWORD: frickl
+        restart: always
+        container_name: mysql
+
     frickl:
         image: sebastianraubach/frickl:x86 (or :arm)
         environment:
@@ -23,20 +37,6 @@ services:
         container_name: frickl
         depends_on:
            - "mysql"
-
-    mysql:
-        image: mysql:5.7 (or yobasystems/alpine-mariadb:arm32v7)
-        volumes:
-          - type: volume
-            source: mysql
-            target: /var/lib/mysql
-        environment:
-          MYSQL_ROOT_PASSWORD: FricklIsAwesome
-          MYSQL_DATABASE: frickl
-          MYSQL_USER: frickl
-          MYSQL_PASSWORD: frickl
-        restart: always
-        container_name: mysql
 
 volumes:
     frickl:
