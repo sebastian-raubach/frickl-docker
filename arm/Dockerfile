@@ -20,7 +20,7 @@ RUN apt-get update && \
 WORKDIR /opt/frickl
 RUN rm .env && \
     echo "VUE_APP_BASE_URL=/frickl/api/" > .env
-RUN apt-get install build-essential && \
+RUN apt-get install -y build-essential && \
     npm i && \
     npm run build && \
     mkdir /opt/frickl-server/web/dist/ && \
