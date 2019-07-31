@@ -31,12 +31,13 @@ COPY build.properties /opt/frickl-server/build.properties
 
 # Download Ant and build the server code
 RUN mkdir -p /usr/local/tomcat/webapps
+RUN rm -rf /usr/local/tomcat/webapps/ROOT
 RUN apt-get update && \
     apt-get install -y wget openjdk-8-jdk && \
     wget https://www-eu.apache.org/dist//ant/binaries/apache-ant-1.10.6-bin.tar.gz -P /tmp/ && \
     tar xvzf /tmp/apache-ant-1.10.6-bin.tar.gz -C /opt/ && \
     /opt/apache-ant-1.10.6/bin/ant -f /opt/frickl-server/build.xml war && \
-    cp /opt/frickl-server/frickl.war /usr/local/tomcat/webapps/
+    cp /opt/frickl-server/ROOT.war /usr/local/tomcat/webapps/
 
 COPY tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 

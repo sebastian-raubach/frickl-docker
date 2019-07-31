@@ -30,7 +30,8 @@ RUN wget https://www-eu.apache.org/dist//ant/binaries/apache-ant-1.10.6-bin.tar.
 RUN tar xvzf /tmp/apache-ant-1.10.6-bin.tar.gz -C /opt/
 RUN /opt/apache-ant-1.10.6/bin/ant -f /opt/frickl-server/build.xml war
 RUN mkdir -p /usr/local/tomcat/webapps
-RUN cp /opt/frickl-server/frickl.war /usr/local/tomcat/webapps/
+RUN rm -rf /usr/local/tomcat/webapps/ROOT
+RUN cp /opt/frickl-server/ROOT.war /usr/local/tomcat/webapps/
 
 COPY tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 
