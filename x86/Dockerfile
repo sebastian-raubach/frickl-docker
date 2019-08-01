@@ -15,7 +15,7 @@ RUN apt-get update && \
 # Build the client code
 WORKDIR /opt/frickl
 RUN rm .env && \
-    echo "VUE_APP_BASE_URL=/frickl/api/" > .env
+    echo "VUE_APP_BASE_URL=/api/" > .env
 RUN apt-get install -y build-essential && \
     npm i && \
     npm run build && \
