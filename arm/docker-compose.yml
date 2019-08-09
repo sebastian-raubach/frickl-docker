@@ -1,18 +1,22 @@
 version: '3.3'
 services:
     frickl:
-        image: frickl
+        image: sebastian-raubah/frickl-arm
         environment:
           - JAVA_OPTS:-Xmx512m
         ports:
           - 80:8080
         restart: unless-stopped
+        volumes:
+          - type: volume
+            source: frickl
+            target: /usr/local/tomcat/temp
         container_name: frickl
         depends_on:
            - "mysql"
 
     mysql:
-        image: mysql:5.7
+        image: yobasystems/alpine-mariadb:arm32v7
         volumes:
           - type: volume
             source: mysql
@@ -26,5 +30,6 @@ services:
         container_name: frickl-mysql
 
 volumes:
+    frickl:
     mysql:
-          
+
