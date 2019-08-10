@@ -40,7 +40,5 @@ RUN apt-get update && \
     cp /opt/frickl-server/ROOT.war /usr/local/tomcat/webapps/
 
 COPY tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
-COPY setenv.sh /usr/local/tomcat/bin/setenv.sh
-RUN chmod +x /usr/local/tomcat/bin/setenv.sh
 
 WORKDIR /
