@@ -24,6 +24,8 @@ services:
         image: sebastianraubach/frickl:x86 (or :arm)
         environment:
           - JAVA_OPTS:-Xmx512m
+          - FRICKL_USERNAME:<OPTIONAL USERNAME FOR AUTHENTICATION>
+          - FRICKL_PASSWORD:<OPTIONAL PASSWORD FOR AUTHENTICATION>
         ports:
           - 80:8080
         restart: always
@@ -70,6 +72,8 @@ docker run -d \
     --name frickl \
     --network frickl \
     --e JAVA_OPTS=-Xmx512m \
+    --e FRICKL_USERNAME=<OPTIONAL USERNAME FOR AUTHENTICATION>
+    --e FRICKL_PASSWORD=<OPTIONAL PASSWORD FOR AUTHENTICATION>
     -v frickl:/usr/local/tomcat/temp \
     -v /path/to/your/images:/data/images \
     -p 80:8080 \
