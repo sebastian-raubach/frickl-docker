@@ -24,6 +24,7 @@ RUN apt-get install -y build-essential && \
 
 # Copy a configuration for the server
 COPY build.properties /opt/frickl-server/build.properties
+COPY config.properties /opt/frickl-server/config.properties
 
 # Download Ant and build the server code
 RUN wget https://www-eu.apache.org/dist//ant/binaries/apache-ant-1.10.6-bin.tar.gz -P /tmp/

@@ -28,6 +28,7 @@ RUN apt-get install -y build-essential && \
 
 # Copy a configuration for the server
 COPY build.properties /opt/frickl-server/build.properties
+COPY config.properties /opt/frickl-server/config.properties
 
 # Download Ant and build the server code
 RUN mkdir -p /usr/local/tomcat/webapps
